@@ -1,0 +1,100 @@
+{
+  "entities": {
+    "user": {
+      "title": "User Profile",
+      "description": "User profile information",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "displayName": { "type": "string" },
+        "companyName": { "type": "string" },
+        "cnpj": { "type": "string" },
+        "role": { "type": "string", "enum": ["user", "admin"] }
+      },
+      "required": ["uid", "email"]
+    },
+    "edict": {
+      "title": "Edict Analysis",
+      "description": "Analyzed edict data",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "organ": { "type": "string" },
+        "object": { "type": "string" },
+        "items": { "type": "array", "items": { "type": "object" } },
+        "documents": { "type": "array", "items": { "type": "object" } },
+        "deadlines": { "type": "array", "items": { "type": "object" } },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "title"]
+    },
+    "certificate": {
+      "title": "Certificate",
+      "description": "User documents and certificates",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "name": { "type": "string" },
+        "category": { "type": "string" },
+        "expiryDate": { "type": "string", "format": "date-time" },
+        "status": { "type": "string", "enum": ["valid", "expired", "pending"] },
+        "fileUrl": { "type": "string" }
+      },
+      "required": ["userId", "name"]
+    },
+    "company": {
+      "title": "Company",
+      "description": "Company information for proposals",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "name": { "type": "string" },
+        "cnpj": { "type": "string" },
+        "address": { "type": "string" },
+        "phone": { "type": "string" },
+        "logoUrl": { "type": "string" },
+        "isDefault": { "type": "boolean" }
+      },
+      "required": ["userId", "name", "cnpj"]
+    },
+    "proposal": {
+      "title": "Proposal",
+      "description": "Generated commercial proposals",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "edictId": { "type": "string" },
+        "companyId": { "type": "string" },
+        "edictTitle": { "type": "string" },
+        "companyName": { "type": "string" },
+        "totalValue": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "edictId", "companyId"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "user",
+      "description": "User profiles"
+    },
+    "/edicts/{edictId}": {
+      "schema": "edict",
+      "description": "Analyzed edicts"
+    },
+    "/certificates/{certId}": {
+      "schema": "certificate",
+      "description": "User certificates"
+    },
+    "/companies/{companyId}": {
+      "schema": "company",
+      "description": "User companies"
+    },
+    "/proposals/{proposalId}": {
+      "schema": "proposal",
+      "description": "Generated proposals"
+    }
+  }
+}
